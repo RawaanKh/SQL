@@ -1,0 +1,56 @@
+create database store;
+create table countries(
+    code int primary key,
+    name varchar(20) unique ,
+    continent_name varchar(20) not null
+);
+create table user(
+  id int primary key ,
+  full_name varchar(20) ,
+  email varchar(20) unique ,
+  gender char(1) check ( gender='F'OR gender='M'),
+  date_of_birth varchar(15),
+  created_at datetime,
+  country_code int,
+  foreign key (country_code)references countries(code)
+
+);
+create table products(
+    id int primary key ,
+    name varchar(10) not null ,
+    price int default 0,
+    status varchar(10) check ( status='valid' or status='expired'),
+    created_at datetime
+);
+create table orders(
+    id int primary key ,
+    user_id int,
+    status varchar(6)check ( status='start' or status='finish'),
+    created_at datetime,
+    foreign key (user_id)references user(id)
+);
+create table order_products(
+  order_id int,
+  product_id int,
+  quantity int default 0,
+  foreign key (product_id) references products(id),
+  foreign key (order_id) references  orders(id)
+);
+#Bouns
+Alter table user
+modify created_at datetime DEFAULT CURRENT_TIMESTAMP;
+
+Alter table orders
+modify created_at datetime DEFAULT CURRENT_TIMESTAMP;
+
+Alter table products
+modify created_at datetime DEFAULT CURRENT_TIMESTAMP;
+
+#4
+insert into countries values (1,'saudi arabia','riyadh');
+insert into user values (10,'Rawan khaled','ra@gmail.com','F','08-06-2002',01,966);
+insert into orders values (11,10,2,'start');
+insert into products values (13,'ipad',3500,'valid',01);
+insert into order_products values (14,9,2);
+update countries set code=966;
+delete from products where price=50;
